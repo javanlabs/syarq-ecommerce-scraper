@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by wisnov on 5/31/17.
+ * Created by idoej
  */
 public class BlibliScraper implements Scraper {
     private static final ObjectMapper mapper = new ObjectMapper();

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by wisnov on 5/31/17.
+ * Created by idoej
  */
 public class BhinnekaScraper implements Scraper {
     @Override
@@ -108,24 +108,5 @@ public class BhinnekaScraper implements Scraper {
             e.printStackTrace();
         }
         return products;
-    }
-
-    public static void main(String[] args) {
-        System.out.println("TESTING");
-        Scraper crawler = new BhinnekaScraper();
-//        ScraperProduct p = crawler.crawl("https://www.bhinneka.com/products/sku09116551/xiaomi_mi_band_2_with_oled_display__merchant_.aspx");
-//        System.out.println(p.getUrl());
-//        System.out.println(p.getName());
-//        System.out.println(p.getPrice());
-//        System.out.println(p.getPhotoUrl());
-//        System.out.println(p.getDescription());
-        List<ScraperProduct> products = crawler.search("xiaomi", 10);
-        for(ScraperProduct product: products) {
-            System.out.println(product.getUrl());
-            System.out.println(product.getName());
-            System.out.println(product.getPrice());
-            System.out.println(product.getPhotoUrl());
-            System.out.println(product.getDescription());
-        }
     }
 }
