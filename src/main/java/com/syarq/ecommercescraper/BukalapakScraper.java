@@ -70,24 +70,4 @@ public class BukalapakScraper implements Scraper {
         }
         return products;
     }
-
-    public static void main(String[] args) {
-        System.out.println("TESTING");
-        Scraper crawler = new BukalapakScraper();
-        List<ScraperProduct> products = crawler.search("xiaomi mi5");
-        for(int i=0;i<products.size();i++){
-            ScraperProduct p = products.get(i);
-            System.out.println(p.getUrl());
-            System.out.println(p.getName());
-            System.out.println(p.getPrice());
-            System.out.println(p.getPhotoUrl());
-            System.out.println(p.getDescription());
-        }
-//        ScraperProduct p = crawler.crawl("https://www.bukalapak.com/p/handphone/hp-smartphone/44j3iq-jual-iphone-6-16gb-gold-grey-garansi-1thn?from=old-popular-section-1");
-//        System.out.println(p.getUrl());
-//        System.out.println(p.getName());
-//        System.out.println(p.getPrice());
-//        System.out.println(p.getPhotoUrl());
-//        System.out.println(p.getDescription());
-    }
 }
