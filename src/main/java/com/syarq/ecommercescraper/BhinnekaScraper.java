@@ -1,11 +1,12 @@
 package com.syarq.ecommercescraper;
 
+import id.co.javan.webscraper.PhantomJsClient;
+import id.co.javan.webscraper.PropertiesResolutionStrategy;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +16,15 @@ import java.util.List;
 public class BhinnekaScraper implements Scraper {
     @Override
     public ScraperProduct scrap(String url) {
-        if (url.contains("/mob_products/")) {
-            url = url.replace("/mob_products/", "/products/");
-        }
-        Document doc;
+//        if (url.contains("/mob_products/")) {
+//            url = url.replace("/mob_products/", "/products/");
+//        }
+//        Document doc;
         ScraperProduct product = null;
         try {
-            doc = Jsoup.connect(url).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36")
-                    .get();
+            PhantomJsClient client = new PhantomJsClient(new PropertiesResolutionStrategy());
+            String html = client.get(url);
+            Document doc = Jsoup.parse(html);
             Elements name = doc.select("h1");
             Elements metas = doc.select("meta");
             Double productPrice = null;
@@ -55,7 +57,7 @@ public class BhinnekaScraper implements Scraper {
                     productPrice,
                     imageUrl);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return product;
@@ -70,19 +72,20 @@ public class BhinnekaScraper implements Scraper {
         String url = "https://www.bhinneka.com/search.aspx?Search=" + keyword;
         String baseUrl = "https://www.bhinneka.com";
         try {
-            Document doc = Jsoup.connect(url)
-                    .get();
-//            System.out.println(doc.toString());
-            Element card = doc.select("div#productList.productListGrid").first();
+            PhantomJsClient client = new PhantomJsClient(new PropertiesResolutionStrategy());
+            String html = client.get(url);
+            Document doc = Jsoup.parse(html);
+            Element card = doc.select("ul.prod-result-grid").first();
             if(card != null && card.children() != null) {
                 ScraperProduct product;
                 int added = 0;
                 int max = limit < card.children().size() && limit > 0 ? limit : card.children().size();
                 for (int i = 0; i < max; i++) {
                     Element e = card.children().get(i);
-                    Elements urlProd = e.select("a.productItem.clickable");
-                    Elements name = e.select("div.productItemThumbnail > img");
-                    Elements price = e.select("div#specialPrice");
+                    Elements urlProd = e.select("a.prod-itm-link");
+                    Elements image = urlProd.select("img");
+                    Elements name = urlProd.select("span.prod-itm-fullname");
+                    Elements price = e.select("span.prod-itm-price-grid");
                     Double productPrice = 0.0;
                     if (urlProd.attr("href") == null || urlProd.attr("href").isEmpty()) {
                         continue;
@@ -97,14 +100,14 @@ public class BhinnekaScraper implements Scraper {
                     if (urlProduct.contains("/mob_products/")) {
                         urlProduct = urlProduct.replace("/mob_products/", "/products/");
                     }
-                    product = new ScraperProduct(urlProduct, name.attr("title"),
-                            "-", productPrice, "https:" + name.attr("src"));
+                    product = new ScraperProduct(urlProduct, name.text(),
+                            "-", productPrice, "https:" + image.attr("src"));
                     products.add(product);
                     added++;
                 }
             }
         }
-        catch (IOException e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return products;

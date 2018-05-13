@@ -1,5 +1,7 @@
 package com.syarq.ecommercescraper;
 
+import id.co.javan.webscraper.PhantomJsClient;
+import id.co.javan.webscraper.PropertiesResolutionStrategy;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,10 +22,11 @@ public class KliknklikScraper implements Scraper {
             url = url.replace("//m.", "//www.");
         }
 
-        Document doc;
         ScraperProduct product = null;
         try {
-            doc = Jsoup.connect(url).get();
+            PhantomJsClient client = new PhantomJsClient(new PropertiesResolutionStrategy());
+            String html = client.get(url);
+            Document doc = Jsoup.parse(html);
             Elements name = doc.select("#judul-produk");
             Elements description = doc.select("#producttab-description");
             Elements specification = doc.select("#producttab-datasheet");
@@ -46,7 +49,7 @@ public class KliknklikScraper implements Scraper {
                     productPrice,
                     photo_url.attr("href"));
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return product;
@@ -61,7 +64,9 @@ public class KliknklikScraper implements Scraper {
         List<ScraperProduct> products = new ArrayList<>();
         String url = "http://kliknklik.com/search?controller=search&orderby=position&orderway=desc&submit_search=&search_query=" + keyword;
         try {
-            Document doc = Jsoup.connect(url).get();
+            PhantomJsClient client = new PhantomJsClient(new PropertiesResolutionStrategy());
+            String html = client.get(url);
+            Document doc = Jsoup.parse(html);
             Elements cards = doc.select("div.product-container");
             ScraperProduct product;
             int max = limit < cards.size() && limit > 0 ? limit : cards.size();
@@ -83,7 +88,7 @@ public class KliknklikScraper implements Scraper {
                 products.add(product);
             }
         }
-        catch (IOException e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return products;
