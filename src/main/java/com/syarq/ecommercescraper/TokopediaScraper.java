@@ -2,6 +2,8 @@ package com.syarq.ecommercescraper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import id.co.javan.webscraper.PhantomJsClient;
+import id.co.javan.webscraper.PropertiesResolutionStrategy;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -22,10 +24,11 @@ public class TokopediaScraper implements Scraper {
             url = url.replace("//m.", "//www.");
         }
 
-        Document doc;
         ScraperProduct product = null;
         try {
-            doc = Jsoup.connect(url).get();
+            PhantomJsClient client = new PhantomJsClient(new PropertiesResolutionStrategy());
+            String html = client.get(url);
+            Document doc = Jsoup.parse(html);
             Elements name = doc.select("h1.product-title > a");
 
             Elements description = doc.select("div.product-info-holder > p");
@@ -46,7 +49,7 @@ public class TokopediaScraper implements Scraper {
                     productPrice,
                     photo_url.attr("src"));
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return product;
@@ -58,11 +61,12 @@ public class TokopediaScraper implements Scraper {
 
     public List<ScraperProduct> search(String keyword, int limit){
         List<ScraperProduct> products = new ArrayList<>();
-        Document doc;
 
         String url = "https://ta.tokopedia.com/promo/v1.1/display/ads?user_id=0&ep=product&item=10&src=search&device=desktop&page=1&q=" + keyword;
         try {
-            doc = Jsoup.connect(url).ignoreContentType(true).userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 Safari/537.36").get();
+            PhantomJsClient client = new PhantomJsClient(new PropertiesResolutionStrategy());
+            String html = client.get(url);
+            Document doc = Jsoup.parse(html);
             JsonNode docObj = mapper.readTree(doc.text());
             JsonNode datas = docObj.get("data");
             int max = limit < datas.size() && limit > 0 ? limit : datas.size();
@@ -85,7 +89,7 @@ public class TokopediaScraper implements Scraper {
                 products.add(p);
             }
         }
-        catch (IOException e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
 

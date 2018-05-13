@@ -2,6 +2,8 @@ package com.syarq.ecommercescraper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import id.co.javan.webscraper.PhantomJsClient;
+import id.co.javan.webscraper.PropertiesResolutionStrategy;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -21,10 +23,11 @@ public class BukalapakScraper implements Scraper {
         if (url.contains("//m.")) {
             url = url.replace("//m.", "//www.");
         }
-        Document doc;
         ScraperProduct product = null;
         try {
-            doc = Jsoup.connect(url).get();
+            PhantomJsClient client = new PhantomJsClient(new PropertiesResolutionStrategy());
+            String html = client.get(url);
+            Document doc = Jsoup.parse(html);
 
             Elements scripts = doc.select("script[type$=application/ld+json]");
             JsonNode productJson = mapper.readTree(scripts.get(1).html());
@@ -36,7 +39,7 @@ public class BukalapakScraper implements Scraper {
                     offerJson.get("price").asDouble(),
                     productJson.get("image").asText());
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return product;
@@ -50,7 +53,9 @@ public class BukalapakScraper implements Scraper {
         List<ScraperProduct> products = new ArrayList<>();
         String url = "https://api.bukalapak.com/v2/products.json?per_page=10&keywords=" + keyword;
         try {
-            Document doc = Jsoup.connect(url).ignoreContentType(true).get();
+            PhantomJsClient client = new PhantomJsClient(new PropertiesResolutionStrategy());
+            String html = client.get(url);
+            Document doc = Jsoup.parse(html);
             JsonNode response = mapper.readTree(doc.text());
             JsonNode prds = response.get("products");
             int max = limit < prds.size() && limit > 0 ? limit : prds.size();
@@ -65,7 +70,7 @@ public class BukalapakScraper implements Scraper {
                 products.add(data);
             }
         }
-        catch (IOException e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return products;

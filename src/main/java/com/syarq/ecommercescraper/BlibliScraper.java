@@ -2,7 +2,8 @@ package com.syarq.ecommercescraper;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jsoup.Connection;
+import id.co.javan.webscraper.PhantomJsClient;
+import id.co.javan.webscraper.PropertiesResolutionStrategy;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,7 +21,6 @@ public class BlibliScraper implements Scraper {
 
     @Override
     public ScraperProduct scrap(String url) {
-        Document doc;
         ScraperProduct product = null;
         try {
             // parse url to get product SKU
@@ -30,54 +30,16 @@ public class BlibliScraper implements Scraper {
             // - https://www.blibli.com/oppo-a71-smartphone-gold-16gb-2gb-MYP.60024.00003.html
             // SKU = ps--BLE.15019.03472
 
-            // if it contains .html, it is a slug url, we must follow redirect first
-            if(url.contains(".html")) {
-                Connection.Response response = Jsoup.connect(url).followRedirects(false).execute();
-                if(response.hasHeader("location")) {
-                    url = response.header("location");
-                }
-            }
+            PhantomJsClient client = new PhantomJsClient(new PropertiesResolutionStrategy());
+            String html = client.get(url);
+            Document doc = Jsoup.parse(html);
+            Elements scripts = doc.select("script[type$=application/ld+json]");
+            JsonNode productJson = mapper.readTree(scripts.get(0).html());
 
-            String[] urlSection = url.split("\\/");
-            String sku = null;
-            for(int i=urlSection.length-1; i>=0; i--) {
-                if(urlSection[i].contains("--")) {
-                    sku = urlSection[i];
-                    if(sku.contains("?")) {
-                        sku = sku.substring(0, sku.indexOf("?"));
-                    }
-                    break;
-                }
-            }
-            if(sku == null) throw new Exception("Blibli has updated its page");
-
-            String jsonUrl = "https://www.blibli.com/backend/product/products/"+sku+"/_summary";
-            doc = Jsoup.connect(jsonUrl)
-//                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0")
-                    .ignoreContentType(true)
-                    .header("Referer", url)
-                    .header("Accept", "application/json, text/plain, */*")
-                    .get();
-            JsonNode productJson = mapper.readTree(doc.text());
-            JsonNode dataJson = productJson.get("data");
-
-            String name = dataJson.get("name").asText();
-            String description = dataJson.get("description").asText();
-            String imgUrl = dataJson.get("images").get(0).get("thumbnail").asText();
-            Double productPrice = 0.0;
-            try {
-                String priceUrl = "https://www.blibli.com/backend/product/products/"+sku+"/_info?defaultItemSku=";
-                doc = Jsoup.connect(priceUrl)
-//                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0")
-                        .ignoreContentType(true)
-                        .header("Referer", url)
-                        .header("Accept", "application/json, text/plain, */*")
-                        .get();
-                JsonNode priceJson = mapper.readTree(doc.text());
-                productPrice = priceJson.get("data").get("price").get("offered").asDouble();
-            } catch (Exception ex) {
-                System.out.println("Parse Price Error: " + ex.getMessage());
-            }
+            String name = productJson.get("name").asText();
+            String description = productJson.get("description").asText();
+            String imgUrl = productJson.get("image").asText();
+            Double productPrice = productJson.get("offers").get("price").asDouble();
             product = new ScraperProduct(url, name, description, productPrice, imgUrl);
 
         } catch (Exception e) {
@@ -95,7 +57,9 @@ public class BlibliScraper implements Scraper {
         String parameter = keyword.replaceAll(" ", "-");
         String url = "https://www.blibli.com/jual/" + parameter + "?" + keyword;
         try {
-            Document doc = Jsoup.connect(url).get();
+            PhantomJsClient client = new PhantomJsClient(new PropertiesResolutionStrategy());
+            String html = client.get(url);
+            Document doc = Jsoup.parse(html);
             Elements cards = doc.select("a.single-product");
             ScraperProduct product;
             int max = limit < cards.size() && limit > 0 ? limit : cards.size();
@@ -113,7 +77,7 @@ public class BlibliScraper implements Scraper {
                 products.add(product);
             }
         }
-        catch (IOException e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
         return products;

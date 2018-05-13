@@ -26,6 +26,11 @@
             <version>2.9.2</version>
         </dependency>
         <dependency>
+            <groupId>id.co.javan</groupId>
+            <artifactId>web-scraper</artifactId>
+            <version>0.1.1</version>
+        </dependency>
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
@@ -33,4 +38,12 @@
         </dependency>
 
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>javan-releases</id>
+            <url>https://maven.javan.co.id/repository/maven-releases</url>
+        </repository>
+    </repositories>
+
 </project>
