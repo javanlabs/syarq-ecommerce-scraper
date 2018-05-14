@@ -30,11 +30,9 @@ public class RamesiaScraper implements Scraper {
 
             JsonNode rootJson = mapper.readTree(scripts.get(0).html());
             JsonNode graphJson = rootJson.get("graph");
-            System.out.println(graphJson.toString());
             JsonNode productJson = null;
             for(int i=0; i<graphJson.size(); i++) {
                 JsonNode json = graphJson.get(i);
-                System.out.println(json.toString());
                 if(json.get("type").asText().equalsIgnoreCase("product")) {
                     productJson = json;
                     break;
