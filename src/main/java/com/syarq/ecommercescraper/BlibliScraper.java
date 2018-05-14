@@ -20,7 +20,7 @@ public class BlibliScraper implements Scraper {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public ScraperProduct scrap(String url) {
+    public ScraperProduct scrape(String url) {
         ScraperProduct product = null;
         try {
             // parse url to get product SKU
