@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class BhinnekaScraper implements Scraper {
     @Override
-    public ScraperProduct scrap(String url) {
+    public ScraperProduct scrape(String url) {
 //        if (url.contains("/mob_products/")) {
 //            url = url.replace("/mob_products/", "/products/");
 //        }

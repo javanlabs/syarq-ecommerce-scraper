@@ -15,7 +15,7 @@ public class KliknklikScraperTest {
     public void scrapTest() {
         Scraper scraper = new KliknklikScraper();
         String url = "https://kliknklik.com/action-camcorder/20291-xiaomi-yi-action-camera-basic-white.html";
-        ScraperProduct p = scraper.scrap(url);
+        ScraperProduct p = scraper.scrape(url);
         assertEquals(url, p.getUrl());
         assertEquals("XIAOMI Yi Action Camera Basic - White", p.getName());
         assertEquals(1599000, p.getPrice(), 0.1);

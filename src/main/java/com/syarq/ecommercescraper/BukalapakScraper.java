@@ -19,7 +19,7 @@ public class BukalapakScraper implements Scraper {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @Override
-    public ScraperProduct scrap(String url) {
+    public ScraperProduct scrape(String url) {
         if (url.contains("//m.")) {
             url = url.replace("//m.", "//www.");
         }

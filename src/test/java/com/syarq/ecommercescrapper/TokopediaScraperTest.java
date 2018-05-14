@@ -15,7 +15,7 @@ public class TokopediaScraperTest {
     public void scrapTest() {
         Scraper scraper = new TokopediaScraper();
         String url = "https://www.tokopedia.com/newrizkyapple/ready-macbook-12-mmgl2-rose-gold-dual-core-m3-ram-8gb-storage-256gb?src=topads";
-        ScraperProduct p = scraper.scrap(url);
+        ScraperProduct p = scraper.scrape(url);
         assertEquals(url, p.getUrl());
         assertEquals("Ready Macbook 12\" MMGL2 Rose Gold Dual Core M3 RAM 8GB Storage 256GB", p.getName());
         assertEquals(15600000, p.getPrice(), 0.1);

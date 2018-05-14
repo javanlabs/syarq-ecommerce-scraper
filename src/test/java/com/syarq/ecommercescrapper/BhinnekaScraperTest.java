@@ -15,7 +15,7 @@ public class BhinnekaScraperTest {
     public void scrapTest() {
         Scraper scraper = new BhinnekaScraper();
         String url = "https://www.bhinneka.com/fjallraven-kanken-deep-red-random-blocked-sku3320816341";
-        ScraperProduct p = scraper.scrap(url);
+        ScraperProduct p = scraper.scrape(url);
         assertEquals(url, p.getUrl());
         assertEquals("FJALLRAVEN Kanken Deep Red-Random Blocked", p.getName());
         assertEquals( 1399000, p.getPrice(),0.1);

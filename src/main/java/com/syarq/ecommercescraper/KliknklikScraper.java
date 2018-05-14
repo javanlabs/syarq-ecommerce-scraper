@@ -17,7 +17,7 @@ import java.util.List;
 public class KliknklikScraper implements Scraper {
 
     @Override
-    public ScraperProduct scrap(String url) {
+    public ScraperProduct scrape(String url) {
         if (url.contains("//m.")) {
             url = url.replace("//m.", "//www.");
         }
