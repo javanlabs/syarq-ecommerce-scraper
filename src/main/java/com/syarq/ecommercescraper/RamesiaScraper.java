@@ -81,7 +81,7 @@ public class RamesiaScraper implements Scraper {
                 } catch (Exception ex) {}
 
                 if(productPrice > 0){
-                    product = new ScraperProduct(name.attr("href"), name.html(), "-", productPrice, "https:"+image.attr("src"));
+                    product = new ScraperProduct(name.attr("href"), name.html(), "-", productPrice, image.attr("src"));
                     products.add(product);
                 }
             }
