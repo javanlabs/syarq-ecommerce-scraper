@@ -9,7 +9,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +17,11 @@ import java.util.List;
  */
 public class BlibliScraper implements Scraper {
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    @Override
+    public boolean shouldScrape(String host) {
+        return host.contains("blibli");
+    }
 
     @Override
     public ScraperProduct scrape(String url) {

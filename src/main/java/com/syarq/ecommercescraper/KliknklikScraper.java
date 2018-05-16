@@ -7,7 +7,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +14,11 @@ import java.util.List;
  * Created by idoej
  */
 public class KliknklikScraper implements Scraper {
+
+    @Override
+    public boolean shouldScrape(String host) {
+        return host.contains("kliknklik.com");
+    }
 
     @Override
     public ScraperProduct scrape(String url) {

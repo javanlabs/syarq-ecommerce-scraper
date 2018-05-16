@@ -18,6 +18,11 @@ public class LazadaScraper implements Scraper {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     @Override
+    public boolean shouldScrape(String host) {
+        return host.contains("lazada");
+    }
+
+    @Override
     public ScraperProduct scrape(String url) {
         ScraperProduct product = null;
         try {

@@ -14,6 +14,12 @@ import java.util.List;
 
 public class RamesiaScraper implements Scraper {
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    @Override
+    public boolean shouldScrape(String host) {
+        return host.contains("ramesia.com");
+    }
+
     @Override
     public ScraperProduct scrape(String url) {
         if (url.contains("//m.")) {

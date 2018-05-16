@@ -15,11 +15,12 @@ import java.util.List;
  */
 public class BhinnekaScraper implements Scraper {
     @Override
+    public boolean shouldScrape(String host) {
+        return host.contains("bhinneka");
+    }
+
+    @Override
     public ScraperProduct scrape(String url) {
-//        if (url.contains("/mob_products/")) {
-//            url = url.replace("/mob_products/", "/products/");
-//        }
-//        Document doc;
         ScraperProduct product = null;
         try {
             PhantomJsClient client = new PhantomJsClient(new PropertiesResolutionStrategy());
