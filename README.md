@@ -2,7 +2,24 @@
 Scraping product page of ecommerce web site to get its data, e.g. name, description, price, etc
 
 # Installation
-Maven: to be updated
+
+Add JAVAN repository
+```xml
+<repository>
+	<id>javan-releases</id>
+	<url>https://maven.javan.co.id/repository/maven-releases</url>
+</repository>
+```
+
+Add dependency
+```xml
+<dependency>
+	<groupId>com.syarq</groupId>
+	<artifactId>ecommerce-scraper</artifactId>
+	<version>1.0</version>
+</dependency>
+```
+
 
 # Usage
 

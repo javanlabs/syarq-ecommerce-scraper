@@ -3,7 +3,6 @@ package com.syarq.ecommercescrapper;
 import com.syarq.ecommercescraper.Scraper;
 import com.syarq.ecommercescraper.ScraperProduct;
 import com.syarq.ecommercescraper.ShopeeScraper;
-import org.junit.Test;
 
 import java.util.List;
 
@@ -11,7 +10,7 @@ import static org.junit.Assert.*;
 
 public class ShopeeScraperTest {
 
-    @Test
+//    @Test
     public void scrapTest() {
         Scraper scraper = new ShopeeScraper();
         String url = "https://shopee.co.id/Buku-Pintar-Layar-Sentuh-muslim-3-bahasa-the-first-e-book-for-children-i.30670219.820045914";

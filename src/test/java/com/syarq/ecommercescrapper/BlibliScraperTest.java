@@ -17,7 +17,7 @@ public class BlibliScraperTest {
         ScraperProduct p = scraper.scrape(url);
         assertEquals(url, p.getUrl());
         assertEquals("Ramadhan Fair - Radysa Organizer Rak Sepatu Portable - Abu Abu [6 Susun]", p.getName());
-        assertEquals(143900, p.getPrice(), 0.1);
+        assertEquals(199000, p.getPrice(), 0.1);
         assertNotNull(p.getPhotoUrl());
         assertNotNull(p.getDescription());
     }

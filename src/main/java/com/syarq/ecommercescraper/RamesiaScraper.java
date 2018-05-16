@@ -35,11 +35,11 @@ public class RamesiaScraper implements Scraper {
             Elements scripts = doc.select("script[type$=application/ld+json]");
 
             JsonNode rootJson = mapper.readTree(scripts.get(0).html());
-            JsonNode graphJson = rootJson.get("graph");
+            JsonNode graphJson = rootJson.get("@graph");
             JsonNode productJson = null;
             for(int i=0; i<graphJson.size(); i++) {
                 JsonNode json = graphJson.get(i);
-                if(json.get("type").asText().equalsIgnoreCase("product")) {
+                if(json.get("@type").asText().equalsIgnoreCase("product")) {
                     productJson = json;
                     break;
                 }

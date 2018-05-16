@@ -17,7 +17,7 @@ public class RamesiaScraperTest {
         String url = "https://ramesia.com/product/mesin-cup-sealer-cs-727i/";
         ScraperProduct p = scraper.scrape(url);
         assertEquals(url, p.getUrl());
-        assertEquals(" Mesin Cup Sealer CS-727i", p.getName());
+        assertEquals("Mesin Cup Sealer CS-727i", p.getName());
         assertEquals( 899000, p.getPrice(),0.1);
         assertNotNull(p.getPhotoUrl());
         assertNotNull(p.getDescription());
