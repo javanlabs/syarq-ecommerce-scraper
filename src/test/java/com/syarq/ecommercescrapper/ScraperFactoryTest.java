@@ -25,7 +25,9 @@ public class ScraperFactoryTest {
                 {"https://ramesia.com/product/mesin-cup-sealer-cs-727i/",
                         RamesiaScraper.class},
                 {"https://www.tokopedia.com/newrizkyapple/ready-macbook-12-mmgl2-rose-gold-dual-core-m3-ram-8gb-storage-256gb?src=topads",
-                        TokopediaScraper.class}
+                        TokopediaScraper.class},
+                {"https://shopee.co.id/GROSIR-LEBIH-MURAH_HnM-Clutch-RING-MINI-i.17828233.172335288",
+                        ShopeeScraper.class}
         };
 
         for(Object[] testDatum: testData) {

@@ -11,7 +11,8 @@ public class ScraperFactory {
             new LazadaScraper(),
             new BhinnekaScraper(),
             new BlibliScraper(),
-            new RamesiaScraper()
+            new RamesiaScraper(),
+            new ShopeeScraper()
     };
 
     public static Scraper create(String url) {

@@ -59,7 +59,6 @@ public class LazadaScraper implements Scraper {
     public List<ScraperProduct> search(String keyword, int limit){
         List<ScraperProduct> products = new ArrayList<>();
         String url = "https://www.lazada.co.id/catalog/?q=" + keyword;
-        System.out.println(url);
         try {
             Document doc = Jsoup.connect(url).get();
             Elements cards = doc.getElementsByTag("script");
